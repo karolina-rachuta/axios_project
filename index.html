@@ -1,12 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
-    
+    <h1>Poznajemy Axiosa ("robimy strazły do API")</h1>
+    <section>
+        <h2>Metoda Get - pobranie wszystkich ksiązek</h2>
+        <button id="get-all-books">Pobierz ksiązki</button>
+        <ul id="all-books-list"></ul>
+    </section>
+    <section>
+        <h2>Metoda Get - pobranie elementu o konkretnym id</h2>
+        <div id="one-book-container"></div>
+    </section>
+    <section>
+        <h2>Metoda Post - dodawanie nowej ksiązki</h2>
+        <form id="add-new-book-form">
+            <label>
+                Autor:
+                <input id='form-author' required type="text">
+            </label>
+            <label>
+                Tytuł:
+                <input id='form-title' required type="text">
+            </label>
+            <label>
+                Cena:
+                <input id='form-price' required type="number">
+            </label>
+            <label>
+                <input id='form-image' required type="url">
+            </label>
+            <button type="submit">Wyślij formularz</button>
+        </form>
+    </section>
+    <template id="book-template">
+        <article>
+            <h3 class="book__title"></h3>
+            <p class="book__author"></p>
+            <img class="book__image" />
+            <p class="book__price"></p>
+            <button class="book__button">Podgląd ksiązki</button>
+        </article>
+    </template>
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="./index.js"></script>
 </body>
+
 </html>
