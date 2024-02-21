@@ -2,6 +2,8 @@ const getAllBooksButton = document.getElementById('get-all-books');
 const allBooksList = document.getElementById('all-books-list');
 const templateElement = document.getElementById('book-template');
 const oneBookContainer = document.getElementById('one-book-container');
+const formElement = document.getElementById('add-new-book-form');
+
 const request = axios.create({
     BaseURL: 'http://localhost:8000'
 })
@@ -11,6 +13,14 @@ if (!getAllBooksButton) {
 } else {
     getAllBooksButton.addEventListener('click', getAllBooks);
 }
+
+
+if (!formElement) {
+    console.warn("Nieznaleziono formularza na stronie");
+} else {
+    formElement.addEventListener('submit', onSubmit);
+}
+
 
 async function getAllBooks() {
     if (!allBooksList) {
@@ -56,16 +66,22 @@ async function getAllBooks() {
 }
 
 async function getBook(event) {
-    if(!oneBookContainer) {
+    if (!oneBookContainer) {
         console.warn("Nie znaleziono kontenera dla wyświetlenia ksiązki")
     }
-    const { id } = event.target.dataset;
+    const {
+        id
+    } = event.target.dataset;
     try {
-        const { data } = await request.get(`/books/#{id}`)
-        const { book } = data
+        const {
+            data
+        } = await request.get(`/books/#{id}`)
+        const {
+            book
+        } = data
 
         if (oneBookContainer.children.length) {
-            const [ bookToRemove ] = oneBookContainer.children;
+            const [bookToRemove] = oneBookContainer.children;
             bookToRemove.remove();
             const template = templateElement.content.cloneNode(true);
             const bookImage = template.querySelector('book__image');
@@ -82,7 +98,7 @@ async function getBook(event) {
             oneBookContainer.appendChild(template);
         }
     } catch (error) {
-            console.error(error);
+        console.error(error);
     }
 }
 
@@ -92,5 +108,31 @@ function onSubmit(event) {
 }
 
 async function addBook() {
-    
+    const authorInput = document.getElementById('form-author');
+    const titleInput = document.getElementById('form-title');
+    const priceInput = document.getElementById('form-price');
+    const imageInput = document.getElementById('form-image');
+    if (!authorInput || !titleInput || !priceInput || !imageInput) {
+        console.warn("Brak pelnego formularza")
+        return;
+    }
+    const newBook = {
+        authors: [authorInput.value],
+        image: imageInput.value,
+        price: Number(priceInput.value),
+        title: titleInput.value
+    };
+    try {
+        const { data, status }  = await request.post('./books', newBook);
+        //object jest standardowo parsowany do JSON przez axios
+        authorInput.value = '';
+        titleInput.value = '';
+        priceInput.value = '';
+        imageInput.value = '';
+        getAllBooks();
+
+       
+    } catch (error){
+        console.error('Wystapił błąd podczas wysyłania nowej ksiązki')
+    }
 }

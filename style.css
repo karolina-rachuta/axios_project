@@ -3,3 +3,12 @@
     height: auto;
     object-fit: contain ;
 }
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form button {
+    max-width: max-content;
+}
